@@ -1,4 +1,4 @@
-# [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=25&pause=1000&color=5E50A1&random=false&width=443&lines=Peworld+Back+End+Application+)](https://git.io/typing-svg)
+# [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=25&pause=1000&color=5E50A1&center=true&vCenter=true&random=false&width=443&lines=Peworld+Back+End+Application+)](https://git.io/typing-svg)
 
 Peworld is a leading platform for finding and connecting the best talents with quality companies. We are committed to shaping the future in the Fourth Industrial Revolution by providing access to the finest talent network and an efficient recruitment experience.
 
@@ -72,4 +72,4 @@ To run this project, you will need to add the following environment variables to
 
 #
 
-![Logo](./img/logo.png)
+![Logo](./assets/logo.png)
