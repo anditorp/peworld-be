@@ -11,6 +11,7 @@ const storage = multer.diskStorage({
   },
 });
 
+// validasi jenis file
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
@@ -22,6 +23,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// validasi limit ukuran file
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
