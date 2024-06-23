@@ -5,16 +5,17 @@ const selectAll = () => {
   return pool.query("SELECT * FROM skills ORDER BY id ASC");
 };
 
-const selectDetail = (id) => {
-  return pool.query("SELECT * FROM skills WHERE id = $1", [id]);
+const selectDetail = async (user_id) => {
+  const query = `SELECT id, skill_name, created_at, updated_at FROM skills WHERE user_id = $1`;
+  return await pool.query(query, [user_id]);
 };
 
-const create = ({ skill_name }) => {
+const create = ({ skill_name, user_id }) => {
   const id = uuidv4();
-  return pool.query(`INSERT INTO skills (id, skill_name) VALUES ($1, $2)`, [
-    id,
-    skill_name,
-  ]);
+  return pool.query(
+    `INSERT INTO skills (id, skill_name, user_id) VALUES ($1, $2, $3)`,
+    [id, skill_name, user_id]
+  );
 };
 
 const drop = (id) => {

@@ -11,7 +11,7 @@ const login = async (req, res, next) => {
 
     const {
       rows: [user],
-    } = await usersModel.findByemail(email);
+    } = await usersModel.findByEmail(email);
     if (!user) {
       return next(createHttpError(403, "email atau password salah"));
     }

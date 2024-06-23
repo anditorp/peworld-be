@@ -24,8 +24,11 @@ const selectAllWorker = ({ limit, offset, sort, sortBy, search }) => {
   return pool.query(query, queryParams);
 };
 
-const selectDetailWorker = (id) => {
-  return pool.query("SELECT * FROM worker WHERE id = $1", [id]);
+const selectDetailWorker = (user_id) => {
+  return pool.query(
+    "SELECT name, job_desc, domicile, workplace, description, skills, photo FROM worker WHERE user_id = $1",
+    [user_id]
+  );
 };
 
 const create = ({ id, name, phone, userId }) => {
@@ -35,16 +38,16 @@ const create = ({ id, name, phone, userId }) => {
   );
 };
 
-const update = (data, id) => {
+const update = (data, user_id) => {
   return pool.query(
-    "UPDATE worker SET name= $1, job_desc= $2, domicile= $3, workplace= $4, description= $5 WHERE id = $6",
+    "UPDATE worker SET name= $1, job_desc= $2, domicile= $3, workplace= $4, description= $5 WHERE user_id = $6",
     [
       data.name,
       data.job_desc,
       data.domicile,
       data.workplace,
       data.description,
-      id,
+      user_id,
     ]
   );
 };

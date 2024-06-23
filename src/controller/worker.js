@@ -1,7 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const createHttpError = require("http-errors");
-
 const { response } = require("../utils/response");
 
 const {
@@ -10,7 +9,6 @@ const {
   selectDetailWorker,
   countWorker,
 } = require("../models/worker");
-
 const userModel = require("../models/user");
 const workerModel = require("../models/worker");
 
@@ -88,13 +86,39 @@ const getAllWorker = async (req, res, next) => {
 
 const getDetailWorker = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const email = req.decoded.email;
+    const result = await userModel.findByEmail(email, { relation: "worker" });
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
     const {
       rows: [worker],
-    } = await selectDetailWorker(id);
+    } = result;
+
+    if (!worker) {
+      return res.status(404).json({
+        status: "error",
+        message: "Worker not found",
+      });
+    }
+
+    const { rows: profile } = await selectDetailWorker(worker.user_id);
+
+    if (!profile.length) {
+      return res.status(404).json({
+        status: "error",
+        message: "Worker profile not found",
+      });
+    }
+
     res.json({
       status: "success",
-      data: worker,
+      data: profile[0],
     });
   } catch (error) {
     next(error);
@@ -103,7 +127,27 @@ const getDetailWorker = async (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const email = req.decoded.email;
+    const result = await userModel.findByEmail(email, { relation: "worker" });
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
+    const {
+      rows: [worker],
+    } = result;
+
+    if (!worker) {
+      return res.status(404).json({
+        status: "error",
+        message: "Worker not found",
+      });
+    }
+
     const { name, job_desc, domicile, workplace, description } = req.body;
 
     const data = {
@@ -113,11 +157,11 @@ const updateProfile = async (req, res, next) => {
       workplace,
       description,
     };
-    await update(data, id);
+    await update(data, worker.user_id);
 
     res.json({
       status: "success",
-      message: "data berhasil ditambahkan",
+      message: "Profile updated successfully",
       data: data,
     });
   } catch (error) {

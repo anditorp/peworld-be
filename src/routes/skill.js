@@ -6,13 +6,13 @@ const {
   createSkill,
   dropSkill,
 } = require("../controller/skill");
-const pool = require("../configs/db");
+const { protect, checkRole } = require("../middleware/auth");
 const route = express.Router();
 
 route
   .get("/", getAllSkill)
-  .get("/:id", getDetailSkill)
-  .post("/", createSkill)
-  .delete("/:id", dropSkill);
+  .get("/my-skill", protect, checkRole("worker"), getDetailSkill)
+  .post("/", protect, checkRole("worker"), createSkill)
+  .delete("/:id", protect, checkRole("worker"), dropSkill);
 
 module.exports = route;
