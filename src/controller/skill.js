@@ -1,7 +1,7 @@
 const { response } = require("../utils/response");
 const userModel = require("../models/user");
-const { selectAll, selectDetail, create, drop } = require("../models/skill");
 const createHttpError = require("http-errors");
+const { selectAll, selectDetail, create, drop } = require("../models/skill");
 
 const getAllSkill = async (req, res, next) => {
   try {
@@ -17,7 +17,6 @@ const getDetailSkill = async (req, res, next) => {
     const email = req.decoded.email;
 
     const result = await userModel.findByEmail(email);
-
     if (result.rows.length === 0) {
       return res.status(404).json({
         status: "error",
@@ -27,7 +26,6 @@ const getDetailSkill = async (req, res, next) => {
 
     const { user_id } = result.rows[0];
     const { rows: mySkills } = await selectDetail(user_id);
-
     if (!mySkills.length) {
       return res.status(404).json({
         status: "error",

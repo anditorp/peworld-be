@@ -7,13 +7,13 @@ const {
   dropExperience,
   updateExperience,
 } = require("../controller/experience");
-const pool = require("../configs/db");
+const { protect, checkRole } = require("../middleware/auth");
 const route = express.Router();
 
 route
   .get("/", getAllExperience)
-  .get("/:id", getDetailExperience)
-  .post("/", createExperience)
+  .get("/my-experience", protect, checkRole("worker"), getDetailExperience)
+  .post("/", protect, checkRole("worker"), createExperience)
   .put("/:id", updateExperience)
   .delete("/:id", dropExperience);
 

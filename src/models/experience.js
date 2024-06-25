@@ -5,15 +5,23 @@ const selectAll = () => {
   return pool.query("SELECT * FROM experience ORDER BY id ASC");
 };
 
-const selectDetail = (id) => {
-  return pool.query("SELECT * FROM experience WHERE id = $1", [id]);
+const selectDetail = async (user_id) => {
+  const query = `SELECT * FROM experience WHERE user_id = $1`;
+  return await pool.query(query, [user_id]);
 };
 
-const create = ({ position, company, work_month, work_year, description }) => {
+const create = ({
+  position,
+  company,
+  work_month,
+  work_year,
+  description,
+  user_id,
+}) => {
   const id = uuidv4();
   return pool.query(
-    `INSERT INTO experience (id, position, company, work_month, work_year, description) VALUES ($1, $2, $3, $4, $5, $6)`,
-    [id, position, company, work_month, work_year, description]
+    `INSERT INTO experience (id, position, company, work_month, work_year, description, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+    [id, position, company, work_month, work_year, description, user_id]
   );
 };
 

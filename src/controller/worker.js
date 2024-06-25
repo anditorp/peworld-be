@@ -108,7 +108,7 @@ const getDetailWorker = async (req, res, next) => {
     }
 
     const { rows: profile } = await selectDetailWorker(worker.user_id);
-
+    console.log(profile);
     if (!profile.length) {
       return res.status(404).json({
         status: "error",

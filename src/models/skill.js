@@ -6,7 +6,7 @@ const selectAll = () => {
 };
 
 const selectDetail = async (user_id) => {
-  const query = `SELECT id, skill_name, created_at, updated_at FROM skills WHERE user_id = $1`;
+  const query = `SELECT user_id, id, skill_name, created_at, updated_at FROM skills WHERE user_id = $1`;
   return await pool.query(query, [user_id]);
 };
 

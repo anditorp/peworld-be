@@ -1,14 +1,28 @@
 const pool = require("../configs/db");
 
 const selectAllWorker = ({ limit, offset, sort, sortBy, search }) => {
-  let query = "SELECT * FROM worker";
+  let query = `
+    SELECT
+      w.id,
+      w.name,
+      w.phone,
+      w.job_desc,
+      w.domicile,
+      w.workplace,
+      w.photo,
+      COALESCE(json_agg(json_build_object('id', s.id, 'skill_name', s.skill_name)) FILTER (WHERE s.id IS NOT NULL), '[]') AS skills
+    FROM worker w
+    LEFT JOIN skills s ON w.user_id = s.user_id
+  `;
 
   const queryParams = [];
 
   if (search) {
-    query += " WHERE name ILIKE $1";
+    query += " WHERE w.name ILIKE $1";
     queryParams.push(`%${search}%`);
   }
+
+  query += ` GROUP BY w.id`;
 
   query += ` ORDER BY ${sort} ${sortBy}`;
 
@@ -26,7 +40,20 @@ const selectAllWorker = ({ limit, offset, sort, sortBy, search }) => {
 
 const selectDetailWorker = (user_id) => {
   return pool.query(
-    "SELECT name, job_desc, domicile, workplace, description, skills, photo FROM worker WHERE user_id = $1",
+    `
+    SELECT
+      w.name,
+      w.phone,
+      w.job_desc,
+      w.domicile,
+      w.workplace,
+      w.photo,
+      COALESCE(json_agg(json_build_object('id', s.id, 'skill_name', s.skill_name)) FILTER (WHERE s.id IS NOT NULL), '[]') AS skills
+    FROM worker w
+    LEFT JOIN skills s ON w.user_id = s.user_id
+    WHERE w.user_id = $1
+    GROUP BY w.id
+    `,
     [user_id]
   );
 };
@@ -40,7 +67,7 @@ const create = ({ id, name, phone, userId }) => {
 
 const update = (data, user_id) => {
   return pool.query(
-    "UPDATE worker SET name= $1, job_desc= $2, domicile= $3, workplace= $4, description= $5 WHERE user_id = $6",
+    "UPDATE worker SET name = $1, job_desc = $2, domicile = $3, workplace = $4, description = $5 WHERE user_id = $6",
     [
       data.name,
       data.job_desc,
