@@ -28,7 +28,7 @@ const create = async ({
     application_name,
     link_repository,
     application,
-    image.secure_url,
+    image,
   ];
   return await pool.query(query, values);
 };
