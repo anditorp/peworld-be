@@ -6,6 +6,7 @@ const {
   updateProfile,
 } = require("../controller/worker");
 const { protect, checkRole } = require("../middleware/auth");
+const upload = require("../middleware/upload");
 
 const route = express.Router();
 
@@ -13,6 +14,12 @@ route
   .get("/", getAllWorker)
   .get("/profile", protect, checkRole("worker"), getDetailWorker)
   .post("/register", createWorker)
-  .put("/update-profile", protect, checkRole("worker"), updateProfile);
+  .put(
+    "/update-profile",
+    protect,
+    checkRole("worker"),
+    upload.single("photo"),
+    updateProfile
+  );
 
 module.exports = route;

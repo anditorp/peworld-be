@@ -68,13 +68,14 @@ const create = ({ id, name, phone, userId }) => {
 
 const update = (data, user_id) => {
   return pool.query(
-    "UPDATE worker SET name = $1, job_desc = $2, domicile = $3, workplace = $4, description = $5 WHERE user_id = $6",
+    "UPDATE worker SET name = $1, job_desc = $2, domicile = $3, workplace = $4, description = $5, photo = $6 WHERE user_id = $7",
     [
       data.name,
       data.job_desc,
       data.domicile,
       data.workplace,
       data.description,
+      data.photo,
       user_id,
     ]
   );

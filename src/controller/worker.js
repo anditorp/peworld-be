@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const createHttpError = require("http-errors");
 const { response } = require("../utils/response");
+const cloudinary = require("../configs/cloudinary");
 
 const {
   selectAllWorker,
@@ -149,6 +150,12 @@ const updateProfile = async (req, res, next) => {
     }
 
     const { name, job_desc, domicile, workplace, description } = req.body;
+    let photoUrl = worker.photo;
+
+    if (req.file) {
+      const photo = await cloudinary.uploader.upload(req.file.path);
+      photoUrl = photo.secure_url;
+    }
 
     const data = {
       name,
@@ -156,6 +163,7 @@ const updateProfile = async (req, res, next) => {
       domicile,
       workplace,
       description,
+      photo: photoUrl,
     };
     await update(data, worker.user_id);
 
