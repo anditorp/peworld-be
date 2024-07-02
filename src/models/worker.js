@@ -48,6 +48,7 @@ const selectDetailWorker = (user_id) => {
       w.domicile,
       w.workplace,
       w.photo,
+      w.description,
       COALESCE(json_agg(json_build_object('id', s.id, 'skill_name', s.skill_name)) FILTER (WHERE s.id IS NOT NULL), '[]') AS skills
     FROM worker w
     LEFT JOIN skills s ON w.user_id = s.user_id
