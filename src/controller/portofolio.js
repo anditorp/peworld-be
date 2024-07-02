@@ -72,7 +72,6 @@ const createPortofolio = async (req, res, next) => {
         .json({ status: "fail", message: "Image is required" });
     }
 
-    // Upload image to Cloudinary
     const result = await cloudinary.uploader.upload(image.path);
 
     const data = {
@@ -82,7 +81,7 @@ const createPortofolio = async (req, res, next) => {
       application,
       image: result.secure_url,
     };
-    await create(data); // Pastikan user_id yang digunakan saat create sesuai dengan pengguna yang sedang login
+    await create(data);
 
     res.status(201).json({
       status: "success",
@@ -121,7 +120,6 @@ const updatePortofolio = async (req, res, next) => {
     };
 
     if (image) {
-      // Upload new image to Cloudinary
       const result = await cloudinary.uploader.upload(image.path);
       data.image = result.secure_url;
     }

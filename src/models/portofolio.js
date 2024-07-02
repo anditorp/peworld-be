@@ -29,7 +29,7 @@ const create = async ({
     link_repository,
     application,
     image.secure_url,
-  ]; // Pastikan untuk menggunakan secure_url dari hasil upload image
+  ];
   return await pool.query(query, values);
 };
 
