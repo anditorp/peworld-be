@@ -49,7 +49,26 @@ const refreshToken = (req, res) => {
   response(res, data, 200, "Refresh Token Success");
 };
 
+const checkRole = (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1]; // Assuming Bearer token format
+
+    // Verify JWT token
+    const decoded = jwt.verify(token, process.env.SECRET_KEY_JWT);
+
+    // Extract role from decoded token
+    const role = decoded.role;
+
+    // Respond with the role
+    response(res, { role }, 200, "Role fetched successfully");
+  } catch (error) {
+    console.log(error);
+    next(createHttpError(401, "Unauthorized"));
+  }
+};
+
 module.exports = {
   login,
   refreshToken,
+  checkRole,
 };
