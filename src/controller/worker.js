@@ -18,7 +18,7 @@ const createWorker = async (req, res, next) => {
     const { email, password, name, phone } = req.body;
     const {
       rows: [user],
-    } = await userModel.findByemail(email);
+    } = await userModel.findByEmail(email);
     if (user) {
       return next(createHttpError(403, "User Sudah terdaftar"));
     }
