@@ -183,7 +183,7 @@ const updateProfile = async (req, res, next) => {
       linkedin,
       photo: photoUrl,
     };
-    await update(data, recruiter.id);
+    await update(data, recruiter.user_id);
 
     res.json({
       status: "success",
