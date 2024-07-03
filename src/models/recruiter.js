@@ -77,9 +77,9 @@ const create = ({
   );
 };
 
-const update = (data, id) => {
+const update = (data, user_id) => {
   return pool.query(
-    "UPDATE recruiter SET name = $1, company = $2, position = $3, city = $4, description = $5, phone = $6, instagram = $7, linkedin = $8, photo = $9 WHERE id = $10",
+    "UPDATE recruiter SET name = $1, company = $2, position = $3, city = $4, description = $5, phone = $6, instagram = $7, linkedin = $8, photo = $9 WHERE user_id = $10",
     [
       data.name,
       data.company,
@@ -90,7 +90,7 @@ const update = (data, id) => {
       data.instagram,
       data.linkedin,
       data.photo,
-      id,
+      user_id,
     ]
   );
 };
