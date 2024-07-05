@@ -13,6 +13,7 @@ const experienceRoute = require("./src/routes/experience");
 const portofolioRoute = require("./src/routes/portofolio");
 const userRoute = require("./src/routes/user");
 const uploadRoutes = require("./src/routes/upload.js");
+const hireRoutes = require("./src/routes/hire.js");
 
 const PORT = process.env.PORT;
 app.use(bodyParser.json());
@@ -31,6 +32,7 @@ app.use("/experience", experienceRoute);
 app.use("/portofolio", portofolioRoute);
 app.use("/user", userRoute);
 app.use("/upload", uploadRoutes);
+app.use("/hire", hireRoutes);
 
 app.use(errorHandler);
 
