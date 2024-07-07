@@ -42,6 +42,7 @@ const selectDetailWorker = (user_id) => {
   return pool.query(
     `
     SELECT
+    w.id,
       w.name,
       w.phone,
       w.job_desc,
