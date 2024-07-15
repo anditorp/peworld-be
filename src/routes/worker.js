@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getAllWorker,
   getDetailWorker,
+  getWorkerById,
   createWorker,
   updateProfile,
 } = require("../controller/worker");
@@ -13,6 +14,7 @@ const route = express.Router();
 route
   .get("/", getAllWorker)
   .get("/profile", protect, checkRole("worker"), getDetailWorker)
+  .get("/:id", getWorkerById)
   .post("/register", createWorker)
   .put(
     "/update-profile",

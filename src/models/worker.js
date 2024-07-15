@@ -38,6 +38,28 @@ const selectAllWorker = ({ limit, offset, sort, sortBy, search }) => {
   return pool.query(query, queryParams);
 };
 
+const selectWorkerById = (id) => {
+  return pool.query(
+    `
+    SELECT
+      w.id,
+      w.name,
+      w.phone,
+      w.job_desc,
+      w.domicile,
+      w.workplace,
+      w.photo,
+      w.description,
+      COALESCE(json_agg(json_build_object('id', s.id, 'skill_name', s.skill_name)) FILTER (WHERE s.id IS NOT NULL), '[]') AS skills
+    FROM worker w
+    LEFT JOIN skills s ON w.user_id = s.user_id
+    WHERE w.id = $1
+    GROUP BY w.id
+    `,
+    [id]
+  );
+};
+
 const selectDetailWorker = (user_id) => {
   return pool.query(
     `
@@ -92,4 +114,5 @@ module.exports = {
   create,
   update,
   countWorker,
+  selectWorkerById,
 };

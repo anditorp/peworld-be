@@ -9,6 +9,7 @@ const {
   update,
   selectDetailWorker,
   countWorker,
+  selectWorkerById,
 } = require("../models/worker");
 const userModel = require("../models/user");
 const workerModel = require("../models/worker");
@@ -126,6 +127,27 @@ const getDetailWorker = async (req, res, next) => {
   }
 };
 
+const getWorkerById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { rows } = await selectWorkerById(id);
+
+    if (!rows.length) {
+      return res.status(404).json({
+        status: "error",
+        message: "Worker not found",
+      });
+    }
+
+    res.json({
+      status: "success",
+      data: rows[0],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateProfile = async (req, res, next) => {
   try {
     const email = req.decoded.email;
@@ -180,6 +202,7 @@ const updateProfile = async (req, res, next) => {
 module.exports = {
   getAllWorker,
   getDetailWorker,
+  getWorkerById, // <-- Add this line
   createWorker,
   updateProfile,
 };
