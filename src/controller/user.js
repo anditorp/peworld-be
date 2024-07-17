@@ -67,8 +67,19 @@ const checkRole = (req, res, next) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  try {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout Success" });
+  } catch (error) {
+    console.log(error);
+    next(createHttpError(500, "Internal Server Error"));
+  }
+};
+
 module.exports = {
   login,
   refreshToken,
   checkRole,
+  logout,
 };
